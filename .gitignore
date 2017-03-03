@@ -87,3 +87,5 @@ ENV/
 
 # Rope project settings
 .ropeproject
+xwego/settings.py
+db.sqlite3

@@ -1,0 +1,41 @@
+<style>
+#payBtn {
+    width: 100%;
+    height: 100px;
+    margin-top: 500px;
+
+    font-size: 30px;
+
+    border-radius: 8px;:
+}
+</style>
+
+
+<button id="payBtn">支付</button>
+
+<script>
+document.getElementById('payBtn').onclick = function () {
+    // 调用微信支付接口
+    var info = {{data|safe}};
+    function onBridgeReady () {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', info, function (res) {
+                if(res.err_msg == "get_brand_wcpay_request：ok" ) {
+                    // TODO
+                }
+            }
+        );
+    }
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('Weix1inJSBridgeReady', onBridgeReady); 
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+}
+
+</script>
