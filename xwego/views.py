@@ -33,10 +33,31 @@ w = wego.init(
     DEBUG=True,
 )
 
-@w.login_required
-def index(request):
+w.create_menu(
+    MenuBtn(
+        u'示例',
+        ViewBtn(u'Github', 'http://github.com/wegostudio')
+    ),
+    MenuBtn(
+        u'互动按钮',
+        ClickBtn(u'点击按钮', 'click msg1'),
+        ScanBtn(u'扫码打开', 'scan_btn'),
+        ClickBtn(u'扫码响应', 'click msg1')
+    ),
+    MenuBtn(
+        u'互动按钮',
+        PhotoBtn(u'选择图片', 'click msg1'),
+        PhotoBtn(u'系统相机', 'click msg1'),
+        PhotoBtn(u'微信相册', 'click msg1')
+    )
+)
 
-    return HttpResponse('Hello %s!' % request.wx_user.nickname)
+@csrf_exempt
+def index(request):
+    push = w.analysis_push(request)
+    user = w.get_ext_userinfo(push.from_user)
+    reply = push.reply_text('hello ' + user.nickname)
+    return HttpResponse(reply)
 
 @w.login_required
 def pay(request):
